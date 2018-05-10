@@ -1,0 +1,51 @@
+---
+#
+---
+@charset "utf-8";
+
+@import 'https://fonts.googleapis.com/css?family=Inconsolata';
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+    background-color: #eeeeee;
+    color: #111111;
+}
+
+body {
+    height: 100%;
+    display: flex;
+}
+
+a:link, a:visited, a:active {
+    text-decoration: none;
+    color: #111111;
+}
+
+a:hover {
+    text-decoration: underline;
+    text-decoration-style: dashed;
+    color: #111111;
+}
+
+div#landing {
+    margin: auto;
+    
+    p {
+        font-family: 'Inconsolata', monospace;
+        font-size: 2em;
+    }
+
+    pre {
+        font-family: 'Inconsolata', monospace;
+        min-height: 150px;
+        margin-top: 40px;
+        font-size: 1.5em;
+        color: #555;
+    }
+}

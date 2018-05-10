@@ -1,0 +1,3 @@
+[build]
+  publish = "publish"
+  command = "export PATH=$PATH:. && gem install jekyll bundler && wget -qO- https://github.com/apache/incubator-openwhisk-cli/releases/download/latest/OpenWhisk_CLI-latest-linux-amd64.tgz | tar zxf - wsk && ./wsk property set --apihost $WSK_API_HOST --auth $WSK_API_KEY && echo ok && ls && ./do.sh --deploy"

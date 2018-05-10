@@ -1,0 +1,10 @@
+# Site settings
+title: whiskers.cat
+baseurl: ""
+deployurl: "https://whiskers.cat"
+# The base url to run actions.
+wskurl: "$__OW_WEB_ACTIONS_BASE_PATH"
+
+# Build settings
+markdown: kramdown
+permalink: /:title

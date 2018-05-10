@@ -1,0 +1,45 @@
+---
+# 
+---
+<!DOCTYPE html>
+<html lang="ca">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <link rel="canonical" href="{{ page.url | prepend: site.deployurl }}">
+        <link rel="stylesheet" href="css/main.css">
+        <title>{{ site.title | escape }}</title>
+    </head>
+
+    <body>
+        <div id="landing">
+            <p>&#128049; <a href="#">wsk action invoke hola</a></p>
+            <pre></pre>
+        </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <script>
+
+            $(function () {
+                var pre = $("#landing").find("pre");
+
+                $("#landing").find("a").click(function () {
+
+                    pre.text("Si us plau esperi...");
+
+                    $.ajax({
+                       url: "{{ site.wskurl }}/whiskers/hello.json"
+                    }).done(function (result) {
+                       console.log("success");
+                       pre.text(JSON.stringify(result, null, 2));
+                    }).fail(function (error) {
+                       console.log("failed");
+                       pre.text("Hi havia un error:\n" + JSON.stringify(error));
+                    });
+                });
+            }); 
+
+        </script>
+        <!-- thanks for reading -->
+    </body>
+</html>
