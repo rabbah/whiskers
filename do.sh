@@ -19,7 +19,8 @@ function deploy() {
   echo ow: $WSKURL
 
   # build static content
-  sed 's#$__OW_WEB_ACTIONS_BASE_PATH#'"${WSKURL}"'#g' config.template > config.yml
+  #sed 's#$__OW_WEB_ACTIONS_BASE_PATH#'"${WSKURL}"'#g' config.template > config.yml
+  cp config.template config.yml
   jekyll build -c config.yml --source site --destination publish
 }
 
