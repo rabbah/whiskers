@@ -1,3 +1,4 @@
 *.*~
-publish
+web/publish
 config.yml
+site/.jekyll-cache

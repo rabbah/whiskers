@@ -1,9 +1,11 @@
 [build]
-  publish = "publish"
-  command = "export PATH=$PATH:. && gem install jekyll bundler && wget -qO- https://github.com/apache/incubator-openwhisk-cli/releases/download/latest/OpenWhisk_CLI-latest-linux-amd64.tgz | tar zxf - wsk && ./wsk property set --apihost $WSK_API_HOST --auth $WSK_API_KEY && echo ok && ls && ./do.sh --deploy"
+  command = "gem install jekyll bundle && ./workaround.sh"
+
+[[plugins]]
+  package = "netlify-plugin-nimbella"
 
 [[redirects]]
-  from = "/action/whiskers/hello.json"
-  to = "https://openwhisk.ng.bluemix.net/api/v1/web/wsk_demos/whiskers/hello.json"
+  from = "/*"
+  to = "https://rodricgm-h4nvfnjgdgg-apigcp.nimbella.io/:splat"
   status = 200
   force = true

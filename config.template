@@ -3,7 +3,7 @@ title: whiskers.cat
 baseurl: ""
 deployurl: "https://whiskers.cat"
 # The base url to run actions.
-wskurl: "/action"
+wskurl: "/api"
 
 # Build settings
 markdown: kramdown
