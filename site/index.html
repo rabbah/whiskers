@@ -13,7 +13,7 @@
 
     <body>
         <div id="landing">
-            <p>&#128049; <a href="#">wsk action invoke hola</a></p>
+            <p>&#128049; <a href="#">nim action invoke hola</a></p>
             <pre></pre>
         </div>
 
@@ -28,7 +28,7 @@
                     pre.text("Si us plau esperi...");
 
                     $.ajax({
-                       url: "{{ site.wskurl }}/whiskers/hello.json"
+                       url: "{{ site.apiurl }}/whiskers/hello.json"
                     }).done(function (result) {
                        console.log("success");
                        pre.text(JSON.stringify(result, null, 2));

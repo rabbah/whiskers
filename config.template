@@ -2,8 +2,9 @@
 title: whiskers.cat
 baseurl: ""
 deployurl: "https://whiskers.cat"
-# The base url to run actions.
-wskurl: "/api"
+
+# The base url to run nimbella serverless apis
+apiurl: "/api"
 
 # Build settings
 markdown: kramdown
