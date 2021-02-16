@@ -1,11 +1,9 @@
 [build]
-  command = "gem install jekyll bundle && ./workaround.sh"
+  # install jekyll to build web frontend
+  command = "gem install jekyll bundle"
 
 [[plugins]]
   package = "netlify-plugin-nimbella"
 
-[[redirects]]
-  from = "/*"
-  to = "https://rodricgm-h4nvfnjgdgg-apigcp.nimbella.io/:splat"
-  status = 200
-  force = true
+[plugins.inputs]
+  web = true
