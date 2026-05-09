@@ -1,17 +1,13 @@
 <!DOCTYPE html>
-<html lang="ca">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Generador de codis QR · QR code generator">
+  <meta name="description" content="QR code generator · Generador de codis QR">
   <title>whiskers.cat</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='5' y='5' width='38' height='38' rx='6' fill='%231d1d1f'/><rect x='13' y='13' width='22' height='22' rx='3' fill='%23fff'/><rect x='20' y='20' width='8' height='8' fill='%231d1d1f'/><rect x='57' y='5' width='38' height='38' rx='6' fill='%231d1d1f'/><rect x='65' y='13' width='22' height='22' rx='3' fill='%23fff'/><rect x='72' y='20' width='8' height='8' fill='%231d1d1f'/><rect x='5' y='57' width='38' height='38' rx='6' fill='%231d1d1f'/><rect x='13' y='65' width='22' height='22' rx='3' fill='%23fff'/><rect x='20' y='72' width='8' height='8' fill='%231d1d1f'/><rect x='57' y='57' width='10' height='10' rx='2' fill='%231d1d1f'/><rect x='72' y='57' width='10' height='10' rx='2' fill='%231d1d1f'/><rect x='87' y='57' width='8' height='10' rx='2' fill='%231d1d1f'/><rect x='57' y='72' width='10' height='10' rx='2' fill='%231d1d1f'/><rect x='87' y='72' width='8' height='10' rx='2' fill='%231d1d1f'/><rect x='57' y='87' width='10' height='8' rx='2' fill='%231d1d1f'/><rect x='72' y='87' width='10' height='8' rx='2' fill='%231d1d1f'/></svg>">
   <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --bg: #ffffff;
@@ -19,9 +15,22 @@
       --text: #1d1d1f;
       --muted: #6e6e73;
       --subtle: #f2f2f5;
+      --input-bg: #ffffff;
       --accent: #0071e3;
       --accent-hover: #0077ed;
       --accent-active: #006edb;
+    }
+
+    [data-theme="dark"] {
+      --bg: #000000;
+      --border: #3a3a3c;
+      --text: #f5f5f7;
+      --muted: #98989d;
+      --subtle: #1c1c1e;
+      --input-bg: #1c1c1e;
+      --accent: #0a84ff;
+      --accent-hover: #409cff;
+      --accent-active: #0071e3;
     }
 
     body {
@@ -34,45 +43,64 @@
       flex-direction: column;
       align-items: center;
       -webkit-font-smoothing: antialiased;
+      transition: background 0.2s ease, color 0.2s ease;
     }
 
-    /* ── Top header ── */
+    /* ── Header ── */
     .site-header {
       width: 100%;
-      padding: 0.875rem 1.5rem;
+      padding: 0.75rem 1.5rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid var(--border);
     }
 
-    .site-header .logo {
+    .logo {
       font-size: 1.375rem;
       line-height: 1;
       text-decoration: none;
-      color: var(--text);
+    }
+
+    .header-actions {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.625rem;
     }
 
-    .site-header .logo span {
-      font-size: 0.9rem;
-      font-weight: 500;
-      letter-spacing: -0.01em;
+    .icon-btn {
+      background: none;
+      border: none;
       color: var(--muted);
-    }
-
-    .site-header a.gh {
-      color: var(--muted);
+      cursor: pointer;
+      padding: 0.25rem;
       display: flex;
       align-items: center;
+      border-radius: 6px;
+      width: auto;
+      transition: color 0.15s;
     }
 
-    .site-header a.gh:hover {
-      color: var(--text);
+    .icon-btn:hover { color: var(--text); background: none; }
+
+    .lang-btn {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      padding: 0.2rem 0.45rem;
+      cursor: pointer;
+      font-family: inherit;
+      width: auto;
+      transition: color 0.15s, border-color 0.15s;
     }
 
+    .lang-btn:hover { color: var(--text); border-color: var(--muted); background: none; }
+
+    /* ── Main ── */
     main {
       flex: 1;
       display: flex;
@@ -91,16 +119,12 @@
       gap: 2rem;
     }
 
-    /* ── Header ── */
-    .header {
-      text-align: center;
-    }
+    .header { text-align: center; }
 
     .header h1 {
       font-size: 1.875rem;
       font-weight: 700;
       letter-spacing: -0.03em;
-      color: var(--text);
     }
 
     .header p {
@@ -123,17 +147,16 @@
       font-size: 1rem;
       font-family: inherit;
       color: var(--text);
-      background: #fff;
+      background: var(--input-bg);
       border: 1.5px solid var(--border);
       border-radius: 10px;
       outline: none;
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
     }
 
-    input[type="text"]::placeholder {
-      color: #b0b0b5;
-    }
+    input[type="text"]::placeholder { color: var(--muted); opacity: 0.6; }
 
-    button {
+    .generate-btn {
       width: 100%;
       padding: 0.6875rem 1.25rem;
       font-size: 0.9375rem;
@@ -147,11 +170,11 @@
       transition: background 0.15s ease;
     }
 
-    button:hover:not(:disabled) { background: var(--accent-hover); }
-    button:active:not(:disabled) { background: var(--accent-active); }
-    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .generate-btn:hover:not(:disabled) { background: var(--accent-hover); }
+    .generate-btn:active:not(:disabled) { background: var(--accent-active); }
+    .generate-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    /* ── QR result area ── */
+    /* ── QR result ── */
     .qr-wrap {
       display: flex;
       flex-direction: column;
@@ -172,9 +195,7 @@
       transition: background 0.3s ease;
     }
 
-    .qr-box.filled {
-      background: transparent;
-    }
+    .qr-box.filled { background: transparent; }
 
     .qr-box img {
       position: absolute;
@@ -187,13 +208,9 @@
       transition: opacity 0.3s ease;
     }
 
-    .qr-box img.visible {
-      opacity: 1;
-    }
+    .qr-box img.visible { opacity: 1; }
 
-    .qr-placeholder-icon {
-      color: #c8c8cc;
-    }
+    .qr-placeholder-icon { color: #c8c8cc; }
 
     .download-link {
       font-size: 0.8125rem;
@@ -202,14 +219,12 @@
       display: none;
     }
 
-    .download-link:hover {
-      text-decoration: underline;
-    }
+    .download-link:hover { text-decoration: underline; }
 
     /* ── Error ── */
     .error {
       font-size: 0.8125rem;
-      color: #c0392b;
+      color: #e74c3c;
       text-align: center;
       display: none;
     }
@@ -229,76 +244,135 @@
 
     /* ── Mobile ── */
     @media (max-width: 480px) {
-      .qr-box {
-        width: 200px;
-        height: 200px;
-      }
-
-      footer a[href="https://whiskers.cat"] {
-        display: none;
-      }
+      .qr-box { width: 200px; height: 200px; }
+      .footer-site { display: none; }
     }
   </style>
 </head>
 <body>
 
   <header class="site-header">
-    <a class="logo" href="https://whiskers.cat">🐱</a>
-    <a class="gh" href="https://github.com/rabbah/whiskers" aria-label="GitHub repository">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
-        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-      </svg>
-    </a>
+    <a class="logo" href="https://whiskers.cat" aria-label="whiskers.cat">🐱</a>
+    <div class="header-actions">
+      <button class="lang-btn" id="lang-btn" onclick="toggleLang()" aria-label="Switch language"></button>
+      <button class="icon-btn" id="theme-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">
+        <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+      <a class="icon-btn" href="https://github.com/rabbah/whiskers" aria-label="GitHub repository">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+      </a>
+    </div>
   </header>
 
   <main>
-  <div class="card">
-    <div class="header">
-      <h1>QR Code Generator</h1>
-      <p>
-        Turn any text or URL into a QR code.<br>
-        (<span lang="ca">Convertiu text o un URL en un codi QR.</span>)
-      </p>
-    </div>
-
-    <div class="form">
-      <input
-        type="text"
-        id="text"
-        placeholder="https://example.cat"
-        maxlength="1024"
-        autocomplete="off"
-        autocorrect="off"
-        spellcheck="false"
-      >
-      <button id="btn" onclick="generate()">Generate</button>
-    </div>
-
-    <div class="qr-wrap">
-      <div class="qr-box" id="qr-box">
-        <svg class="qr-placeholder-icon" id="qr-placeholder" xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/>
-          <rect x="5" y="5" width="3" height="3"/><rect x="16" y="5" width="3" height="3"/><rect x="5" y="16" width="3" height="3"/>
-          <path d="M14 14h3v3h-3z"/><path d="M17 14h4"/><path d="M14 17v4"/><path d="M17 17h4v4h-4z"/>
-        </svg>
-        <img id="qr" alt="QR code">
+    <div class="card">
+      <div class="header">
+        <h1 id="i18n-title"></h1>
+        <p id="i18n-subtitle"></p>
       </div>
-      <a class="download-link" id="download" download="qrcode.png">
-        Download &middot; <span lang="ca">Descarregar</span>
-      </a>
-    </div>
 
-    <p class="error" id="error">
-      Something went wrong. (<span lang="ca">Hi havia un error.</span>) Please try again.
-    </p>
-  </div>
+      <div class="form">
+        <input
+          type="text"
+          id="text"
+          maxlength="1024"
+          autocomplete="off"
+          autocorrect="off"
+          spellcheck="false"
+        >
+        <button class="generate-btn" id="btn" onclick="generate()"></button>
+      </div>
+
+      <div class="qr-wrap">
+        <div class="qr-box" id="qr-box">
+          <svg class="qr-placeholder-icon" id="qr-placeholder" xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/>
+            <rect x="5" y="5" width="3" height="3"/><rect x="16" y="5" width="3" height="3"/><rect x="5" y="16" width="3" height="3"/>
+            <path d="M14 14h3v3h-3z"/><path d="M17 14h4"/><path d="M14 17v4"/><path d="M17 17h4v4h-4z"/>
+          </svg>
+          <img id="qr" alt="QR code">
+        </div>
+        <a class="download-link" id="download" download="qrcode.png"></a>
+      </div>
+
+      <p class="error" id="error"></p>
+    </div>
   </main>
 
   <footer>
-    <a href="https://whiskers.cat">whiskers.cat</a>
+    <a class="footer-site" href="https://whiskers.cat">whiskers.cat</a>
   </footer>
 
   <script>
+    // ── i18n ──────────────────────────────────────────────
+    const strings = {
+      en: {
+        title:       'QR Code Generator',
+        subtitle:    'Turn any text or URL into a QR code.',
+        placeholder: 'https://example.cat',
+        generate:    'Generate',
+        generating:  'Generating…',
+        download:    'Download',
+        error:       'Something went wrong. Please try again.',
+        langSwitch:  'CA',
+      },
+      ca: {
+        title:       'Generador de codis QR',
+        subtitle:    'Convertiu text o un URL en un codi QR.',
+        placeholder: 'https://exemple.cat',
+        generate:    'Generar',
+        generating:  'Generant…',
+        download:    'Descarregar',
+        error:       'Hi havia un error. Torneu-ho a provar.',
+        langSwitch:  'EN',
+      },
+    };
+
+    let lang = localStorage.getItem('lang') ||
+      (navigator.language.startsWith('ca') ? 'ca' : 'en');
+
+    function applyLang() {
+      const s = strings[lang];
+      document.documentElement.lang = lang;
+      document.getElementById('i18n-title').textContent      = s.title;
+      document.getElementById('i18n-subtitle').textContent   = s.subtitle;
+      document.getElementById('text').placeholder            = s.placeholder;
+      document.getElementById('btn').textContent             = s.generate;
+      document.getElementById('lang-btn').textContent        = s.langSwitch;
+      const dl = document.getElementById('download');
+      if (dl.style.display !== 'none') dl.textContent = s.download;
+    }
+
+    function toggleLang() {
+      lang = lang === 'en' ? 'ca' : 'en';
+      localStorage.setItem('lang', lang);
+      applyLang();
+    }
+
+    // ── Dark mode ─────────────────────────────────────────
+    const sunIcon  = `<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>`;
+    const moonIcon = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>`;
+
+    const stored = localStorage.getItem('theme');
+    let dark = stored ? stored === 'dark'
+                      : window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    function applyTheme() {
+      document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+      document.getElementById('theme-icon').innerHTML = dark ? sunIcon : moonIcon;
+    }
+
+    function toggleTheme() {
+      dark = !dark;
+      localStorage.setItem('theme', dark ? 'dark' : 'light');
+      applyTheme();
+    }
+
+    // ── QR generation ─────────────────────────────────────
     const input       = document.getElementById('text');
     const btn         = document.getElementById('btn');
     const qrBox       = document.getElementById('qr-box');
@@ -313,7 +387,7 @@
       if (!text || text === last) return;
 
       btn.disabled = true;
-      btn.textContent = 'Generant…';
+      btn.textContent = strings[lang].generating;
       err.style.display = 'none';
 
       fetch('/api/default/qr?text=' + encodeURIComponent(text))
@@ -325,20 +399,26 @@
             qrBox.classList.add('filled');
             qrImg.classList.add('visible');
             download.href = dataUrl;
+            download.textContent = strings[lang].download;
             download.style.display = 'inline';
           };
           qrImg.src = dataUrl;
         })
         .catch(() => {
+          err.textContent = strings[lang].error;
           err.style.display = 'block';
         })
         .finally(() => {
           btn.disabled = false;
-          btn.textContent = 'Generate';
+          btn.textContent = strings[lang].generate;
         });
     }
 
     input.addEventListener('keydown', e => { if (e.key === 'Enter') generate(); });
+
+    // ── Init ──────────────────────────────────────────────
+    applyTheme();
+    applyLang();
   </script>
 
 </body>
