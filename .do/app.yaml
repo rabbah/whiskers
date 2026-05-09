@@ -1,0 +1,36 @@
+name: whiskers-cat
+region: nyc
+
+domains:
+  - domain: whiskers.cat
+    type: PRIMARY
+
+static_sites:
+  - name: web
+    github:
+      repo: rabbah/whiskers
+      branch: master
+      deploy_on_push: true
+    source_dir: web
+    index_document: index.html
+    catchall_document: index.html
+
+functions:
+  - name: api
+    github:
+      repo: rabbah/whiskers
+      branch: master
+      deploy_on_push: true
+
+ingress:
+  rules:
+    - match:
+        path:
+          prefix: /api
+      component:
+        name: api
+    - match:
+        path:
+          prefix: /
+      component:
+        name: web

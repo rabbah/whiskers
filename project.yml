@@ -1,2 +1,6 @@
-bucket:
-  strip: 1
+packages:
+  - name: default
+    functions:
+      - name: qr
+        runtime: nodejs:24
+        web: true

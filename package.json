@@ -1,7 +1,0 @@
-{
-  "name": "whiskers.cat",
-  "version": "1.0.0",
-  "devDependencies": {
-    "netlify-plugin-nimbella": "nimbella/netlify-plugin-nimbella"
-  }
-}

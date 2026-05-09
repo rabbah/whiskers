@@ -1,9 +1,0 @@
-[build]
-  # install jekyll to build web frontend
-  command = "gem install jekyll bundle"
-
-[[plugins]]
-  package = "netlify-plugin-nimbella"
-
-[plugins.inputs]
-  web = true

@@ -1,26 +1,34 @@
-Deploys an HTML site with an AJAX callout to a serverless API.
+# whiskers.cat
 
-The site is built with Jekyll and deploys to the Nimbella serverless cloud.
-This project also demonstrates how to use Netlify as a proxy to your Nimbella domain to use a custom domain name with SSL.
+A QR code generator deployed on [DigitalOcean App Platform + Functions](https://docs.digitalocean.com/products/app-platform/).
 
-### Required software
-* Install [Jekyll](https://jekyllrb.com/docs/installation/).
-* Install [Nimbella CLI](https://docs.nimbella.com/install).
+Enter any text or URL and get a scannable QR code back instantly.
 
-### Configure your Nimbella CLI
+## How it works
 
-A Nimbella account is required to use the Nimbella CLI. You can [create a free account](https://nimbella.com) if necessary.
-Configure your CLI using `nim login` or see the [available documentation](https://docs.nimbella.com/nim-cmds/auth).
+A static HTML frontend calls a serverless Node.js function that generates a QR code using the [`qrcode`](https://www.npmjs.com/package/qrcode) package and returns it as a PNG data URL. The frontend renders it directly in an `<img>` tag.
 
-### Local development and deployment
+```
+GET /api/default/qr?text=<input>
+→ 200 text/html  data:image/png;base64,...
+```
 
-* Edit [config.template](config.template) to configure for your deployment.
-Namely, set the domain name which is used to configure the canonical header in the site HTML.
+## Project structure
 
-* Run `nim project deploy .`
+```
+.do/app.yaml               App Platform app spec
+project.yml                DigitalOcean Functions manifest
+packages/
+  default/
+    qr/
+      qr.js                Serverless function
+      package.json         qrcode dependency
+web/
+  index.html               Static frontend (no build step)
+```
 
-### Deploy using Netlify
+## Deployment
 
-This project is also configured to deploy with Netlify using the Nimbella plugin for Netlify.
-Connect your GitHub repo to Netlify to build and deploy your site on new Git commit.
-You will need to edit the `redirects` section in [`netlify.toml`](./netlify.toml#L9) to specify your Nimbella domain name for your project.
+The app is deployed via DigitalOcean App Platform. Every push to `master` triggers an automatic redeploy of both the static site and the function.
+
+See [SETUP.md](SETUP.md) for first-time setup instructions.
